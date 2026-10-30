@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FreshGuard | Batch Details</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #101828;
+            color: white;
+            padding: 28px 18px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            padding: 0 14px;
+            margin-bottom: 8px;
+        }
+
+        .tagline {
+            font-size: 12px;
+            color: #98a2b3;
+            padding: 0 14px;
+            margin-bottom: 35px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 13px 14px;
+            margin-bottom: 6px;
+            border-radius: 9px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #1d2939;
+            color: white;
+        }
+
+        .nav-icon {
+            display: inline-block;
+            width: 28px;
+        }
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 30px 38px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #475467;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 28px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 750;
+        }
+
+        .subtitle {
+            margin-top: 7px;
+            color: #667085;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            padding: 8px 14px;
+            border-radius: 18px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .healthy {
+            background: #ecfdf3;
+            color: #027a48;
+        }
+
+        .warning {
+            background: #fffaeb;
+            color: #b54708;
+        }
+
+        .critical {
+            background: #fef3f2;
+            color: #b42318;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #eaecf0;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 22px;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .metric {
+            background: #f8f9fc;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .metric-label {
+            color: #667085;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 22px;
+            font-weight: 750;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid #f2f4f7;
+            font-size: 13px;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #667085;
+        }
+
+        .detail-value {
+            font-weight: 650;
+        }
+
+        .risk-box {
+            border-radius: 11px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .risk-box.healthy {
+            background: #f0fdf4;
+        }
+
+        .risk-box.warning {
+            background: #fffcf5;
+        }
+
+        .risk-box.critical {
+            background: #fff8f7;
+        }
+
+        .risk-title {
+            font-size: 14px;
+            font-weight: 750;
+            margin-bottom: 7px;
+        }
+
+        .risk-description {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #475467;
+        }
+
+        .recommendation {
+            background: #f8f9fc;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .recommendation-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .recommendation-text {
+            font-size: 12px;
+            color: #667085;
+            line-height: 1.6;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 9px;
+            padding: 11px 17px;
+            font-size: 13px;
+            font-weight: 650;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #344054;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #344054;
+            border: 1px solid #d0d5dd;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 80px;
+            color: #667085;
+        }
+
+        .error {
+            text-align: center;
+            padding: 80px;
+            color: #b42318;
+        }
+
+        @media (max-width: 900px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                width: 70px;
+            }
+
+            .logo,
+            .tagline,
+            .nav-text {
+                display: none;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            FreshGuard
+        </div>
+
+        <div class="tagline">
+            Intelligent shelf-life monitoring
+        </div>
+
+        <a href="/" class="nav-item">
+            <span class="nav-icon">⌂</span>
+            <span class="nav-text">Dashboard</span>
+        </a>
+
+        <a href="/batches" class="nav-item active">
+            <span class="nav-icon">▣</span>
+            <span class="nav-text">Batches</span>
+        </a>
+
+        <a href="#" class="nav-item">
+            <span class="nav-icon">◉</span>
+            <span class="nav-text">Monitoring</span>
+        </a>
+
+        <a href="#" class="nav-item">
+            <span class="nav-icon">◌</span>
+            <span class="nav-text">Analytics</span>
+        </a>
+
+        <a href="#" class="nav-item">
+            <span class="nav-icon">!</span>
+            <span class="nav-text">Alerts</span>
+        </a>
+
+        <a href="#" class="nav-item">
+            <span class="nav-icon">⚙</span>
+            <span class="nav-text">Settings</span>
+        </a>
+
+    </aside>
+
+
+    <main class="main">
+
+        <a href="/batches" class="back-link">
+            ← Back to Batches
+        </a>
+
+
+        <div id="loading" class="loading">
+            Loading batch information...
+        </div>
+
+
+        <div id="error" class="error" style="display:none;">
+            Unable to load batch information.
+        </div>
+
+
+        <div id="content" style="display:none;">
+
+            <div class="header">
+
+                <div>
+
+                    <div
+                        class="title"
+                        id="pageTitle"
+                    >
+                        Batch Details
+                    </div>
+
+                    <div
+                        class="subtitle"
+                        id="pageSubtitle"
+                    >
+                        Food batch information
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="statusBadge"
+                    class="status-badge"
+                >
+                    Status
+                </div>
+
+            </div>
+
+
+            <div class="grid">
+
+                <div>
+
+                    <!-- CORE METRICS -->
+
+                    <section class="panel">
+
+                        <div class="panel-title">
+                            Current Conditions
+                        </div>
+
+                        <div class="metrics">
+
+                            <div class="metric">
+
+                                <div class="metric-label">
+                                    Temperature
+                                </div>
+
+                                <div
+                                    class="metric-value"
+                                    id="temperature"
+                                >
+                                    --
+                                </div>
+
+                            </div>
+
+
+                            <div class="metric">
+
+                                <div class="metric-label">
+                                    Humidity
+                                </div>
+
+                                <div
+                                    class="metric-value"
+                                    id="humidity"
+                                >
+                                    --
+                                </div>
+
+                            </div>
+
+
+                            <div class="metric">
+
+                                <div class="metric-label">
+                                    Remaining Shelf Life
+                                </div>
+
+                                <div
+                                    class="metric-value"
+                                    id="shelfLife"
+                                >
+                                    --
+                                </div>
+
+                            </div>
+
+
+                            <div class="metric">
+
+                                <div class="metric-label">
+                                    Product
+                                </div>
+
+                                <div
+                                    class="metric-value"
+                                    id="product"
+                                >
+                                    --
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- BATCH INFORMATION -->
+
+                    <section class="panel">
+
+                        <div class="panel-title">
+                            Batch Information
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <span class="detail-label">
+                                Batch Code
+                            </span>
+
+                            <span
+                                class="detail-value"
+                                id="batchCode"
+                            >
+                                --
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <span class="detail-label">
+                                Product
+                            </span>
+
+                            <span
+                                class="detail-value"
+                                id="productDetail"
+                            >
+                                --
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <span class="detail-label">
+                                Created
+                            </span>
+
+                            <span
+                                class="detail-value"
+                                id="createdAt"
+                            >
+                                --
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <span class="detail-label">
+                                Current Status
+                            </span>
+
+                            <span
+                                class="detail-value"
+                                id="statusDetail"
+                            >
+                                --
+                            </span>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- RISK -->
+
+                <div>
+
+                    <section class="panel">
+
+                        <div class="panel-title">
+                            Shelf-Life Assessment
+                        </div>
+
+
+                        <div
+                            id="riskBox"
+                            class="risk-box"
+                        >
+
+                            <div
+                                id="riskTitle"
+                                class="risk-title"
+                            >
+                                Assessment
+                            </div>
+
+                            <div
+                                id="riskDescription"
+                                class="risk-description"
+                            >
+                                --
+                            </div>
+
+                        </div>
+
+
+                        <div class="recommendation">
+
+                            <div class="recommendation-title">
+                                Recommended Action
+                            </div>
+
+                            <div
+                                id="recommendation"
+                                class="recommendation-text"
+                            >
+                                --
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <div class="actions">
+
+                        <a
+                            href="/batches"
+                            class="btn btn-secondary"
+                        >
+                            Back
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    function getBatchId() {
+
+        const path =
+            window.location.pathname;
+
+        const parts =
+            path.split("/");
+
+        return parts[
+            parts.length - 1
+        ];
+
+    }
+
+
+    async function loadBatch() {
+
+        const batchId =
+            getBatchId();
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/batches/${batchId}`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Batch not found."
+                );
+
+            }
+
+
+            const batch =
+                await response.json();
+
+
+            renderBatch(batch);
+
+
+        } catch (error) {
+
+            document
+                .getElementById("loading")
+                .style.display = "none";
+
+            document
+                .getElementById("error")
+                .style.display = "block";
+
+        }
+
+    }
+
+
+    function renderBatch(batch) {
+
+        document
+            .getElementById("loading")
+            .style.display = "none";
+
+
+        document
+            .getElementById("content")
+            .style.display = "block";
+
+
+        document
+            .getElementById("pageTitle")
+            .textContent =
+                batch.product_name;
+
+
+        document
+            .getElementById("pageSubtitle")
+            .textContent =
+                `Batch ${batch.batch_code}`;
+
+
+        const status =
+            batch.status;
+
+
+        const statusBadge =
+            document.getElementById(
+                "statusBadge"
+            );
+
+
+        statusBadge.textContent =
+            status;
+
+
+        statusBadge.className =
+            `status-badge ${status.toLowerCase()}`;
+
+
+        document
+            .getElementById("temperature")
+            .textContent =
+                `${batch.temperature.toFixed(1)}°C`;
+
+
+        document
+            .getElementById("humidity")
+            .textContent =
+                `${batch.humidity.toFixed(1)}%`;
+
+
+        document
+            .getElementById("shelfLife")
+            .textContent =
+                `${batch.remaining_shelf_life.toFixed(1)} days`;
+
+
+        document
+            .getElementById("product")
+            .textContent =
+                batch.product_name;
+
+
+        document
+            .getElementById("batchCode")
+            .textContent =
+                batch.batch_code;
+
+
+        document
+            .getElementById("productDetail")
+            .textContent =
+                batch.product_name;
+
+
+        document
+            .getElementById("createdAt")
+            .textContent =
+                formatDate(batch.created_at);
+
+
+        document
+            .getElementById("statusDetail")
+            .textContent =
+                status;
+
+
+        const riskBox =
+            document.getElementById(
+                "riskBox"
+            );
+
+
+        riskBox.className =
+            `risk-box ${status.toLowerCase()}`;
+
+
+        const riskTitle =
+            document.getElementById(
+                "riskTitle"
+            );
+
+
+        const riskDescription =
+            document.getElementById(
+                "riskDescription"
+            );
+
+
+        const recommendation =
+            document.getElementById(
+                "recommendation"
+            );
+
+
+        if (status === "Critical") {
+
+            riskTitle.textContent =
+                "Critical shelf-life risk";
+
+            riskDescription.textContent =
+                "This batch has very limited remaining shelf life and requires immediate attention.";
+
+            recommendation.textContent =
+                "Prioritize this batch for immediate inspection, processing, or distribution before quality deteriorates further.";
+
+        } else if (status === "Warning") {
+
+            riskTitle.textContent =
+                "Elevated shelf-life risk";
+
+            riskDescription.textContent =
+                "This batch is approaching the critical shelf-life threshold and should be monitored closely.";
+
+            recommendation.textContent =
+                "Increase monitoring frequency and prioritize this batch for earlier distribution or processing.";
+
+        } else {
+
+            riskTitle.textContent =
+                "Healthy shelf-life condition";
+
+            riskDescription.textContent =
+                "The batch currently has sufficient remaining shelf life according to the FreshGuard assessment.";
+
+            recommendation.textContent =
+                "Continue normal monitoring and maintain appropriate storage conditions.";
+
+        }
+
+    }
+
+
+    function formatDate(dateString) {
+
+        const date =
+            new Date(dateString);
+
+
+        return date.toLocaleString(
+            "en-IN",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    loadBatch();
+
+</script>
+
+</body>
+
+</html>

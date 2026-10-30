@@ -1,0 +1,2524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FreshGuard | Alerts</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+
+            --bg: #f4f7fb;
+            --surface: #ffffff;
+            --surface-soft: #f8fafc;
+
+            --border: #e6eaf0;
+
+            --text: #172033;
+            --muted: #667085;
+            --light: #98a2b3;
+
+            --sidebar: #0d1728;
+            --sidebar-hover: #17243a;
+
+            --blue: #2f6fed;
+            --blue-soft: #eef4ff;
+
+            --green: #12b76a;
+            --green-soft: #ecfdf3;
+
+            --orange: #f79009;
+            --orange-soft: #fffaeb;
+
+            --red: #f04438;
+            --red-soft: #fef3f2;
+
+            --shadow:
+                0 8px 28px rgba(16, 24, 40, 0.06);
+        }
+
+
+        body {
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 90% 0%,
+                    rgba(47,111,237,0.08),
+                    transparent 28%
+                ),
+                var(--bg);
+
+            color: var(--text);
+        }
+
+
+        /* =========================================
+           APP
+        ========================================= */
+
+        .app {
+
+            display: flex;
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+
+        .sidebar {
+
+            width: 250px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #0b1526 0%,
+                    #101c30 100%
+                );
+
+            color: white;
+
+            padding: 28px 16px;
+
+            position: fixed;
+
+            top: 0;
+            bottom: 0;
+            left: 0;
+
+            z-index: 20;
+
+            box-shadow:
+                10px 0 35px rgba(10,20,40,0.08);
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+
+            padding: 0 14px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .tagline {
+
+            font-size: 11px;
+
+            color: #94a3b8;
+
+            padding: 0 14px;
+
+            margin-bottom: 34px;
+        }
+
+
+        .nav-item {
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 12px 14px;
+
+            margin-bottom: 6px;
+
+            border-radius: 10px;
+
+            color: #b9c4d4;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            border: 1px solid transparent;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .nav-item:hover {
+
+            background:
+                rgba(255,255,255,0.055);
+
+            color: white;
+
+            transform:
+                translateX(2px);
+        }
+
+
+        .nav-item.active {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(47,111,237,0.23),
+                    rgba(47,111,237,0.07)
+                );
+
+            border-color:
+                rgba(96,146,255,0.15);
+
+            color: white;
+
+            box-shadow:
+                inset 3px 0 0 var(--blue);
+        }
+
+
+        .nav-icon {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 28px;
+
+            font-size: 16px;
+        }
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .main {
+
+            margin-left: 250px;
+
+            width:
+                calc(100% - 250px);
+
+            padding:
+                30px 38px 45px;
+        }
+
+
+        /* =========================================
+           TOP BAR
+        ========================================= */
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 28px;
+        }
+
+
+        .page-title {
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.8px;
+        }
+
+
+        .page-subtitle {
+
+            margin-top: 7px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+
+        .live-indicator {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            background:
+                rgba(255,255,255,0.95);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                999px;
+
+            padding:
+                9px 15px;
+
+            font-size: 12px;
+
+            color:
+                #027a48;
+
+            box-shadow:
+                0 5px 18px rgba(16,24,40,0.04);
+        }
+
+
+        .live-dot {
+
+            width: 8px;
+
+            height: 8px;
+
+            background:
+                var(--green);
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(18,183,106,0.12);
+
+            animation:
+                pulse 2s infinite;
+        }
+
+
+        @keyframes pulse {
+
+            0% {
+                box-shadow:
+                    0 0 0 0
+                    rgba(18,183,106,0.35);
+            }
+
+            70% {
+                box-shadow:
+                    0 0 0 6px
+                    rgba(18,183,106,0);
+            }
+
+            100% {
+                box-shadow:
+                    0 0 0 0
+                    rgba(18,183,106,0);
+            }
+        }
+
+
+        /* =========================================
+           SUMMARY
+        ========================================= */
+
+        .summary-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .summary-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                rgba(255,255,255,0.97);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                15px;
+
+            padding:
+                22px;
+
+            box-shadow:
+                var(--shadow);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .summary-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 14px 35px
+                rgba(16,24,40,0.09);
+        }
+
+
+        .summary-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 80px;
+
+            height: 80px;
+
+            right: -28px;
+
+            top: -28px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(47,111,237,0.05);
+        }
+
+
+        .summary-label {
+
+            color:
+                var(--muted);
+
+            font-size:
+                11px;
+
+            font-weight:
+                650;
+
+            margin-bottom:
+                11px;
+        }
+
+
+        .summary-value {
+
+            font-size:
+                31px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                -0.8px;
+        }
+
+
+        .summary-total {
+
+            color:
+                #344054;
+        }
+
+
+        .summary-critical {
+
+            color:
+                #b42318;
+        }
+
+
+        .summary-warning {
+
+            color:
+                #b54708;
+        }
+
+
+        /* =========================================
+           PANEL
+        ========================================= */
+
+        .panel {
+
+            background:
+                rgba(255,255,255,0.97);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                16px;
+
+            padding:
+                24px;
+
+            box-shadow:
+                var(--shadow);
+        }
+
+
+        .panel-header {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            margin-bottom:
+                22px;
+        }
+
+
+        .panel-title {
+
+            font-size:
+                16px;
+
+            font-weight:
+                750;
+        }
+
+
+        .panel-description {
+
+            margin-top:
+                4px;
+
+            color:
+                var(--light);
+
+            font-size:
+                11px;
+        }
+
+
+        .refresh-text {
+
+            color:
+                var(--light);
+
+            font-size:
+                11px;
+        }
+
+
+        /* =========================================
+           ALERT LIST
+        ========================================= */
+
+        .alert-list {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                15px;
+        }
+
+
+        .alert-card {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                7px 1fr auto;
+
+            gap:
+                18px;
+
+            align-items:
+                start;
+
+            padding:
+                20px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                14px;
+
+            background:
+                white;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .alert-card:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(16,24,40,0.07);
+        }
+
+
+        .alert-card.critical {
+
+            border-color:
+                #fecdca;
+        }
+
+
+        .alert-card.warning {
+
+            border-color:
+                #fedf89;
+        }
+
+
+        .alert-indicator {
+
+            width:
+                7px;
+
+            min-height:
+                82px;
+
+            border-radius:
+                10px;
+
+            background:
+                var(--orange);
+        }
+
+
+        .alert-card.critical
+        .alert-indicator {
+
+            background:
+                var(--red);
+        }
+
+
+        .alert-card.warning
+        .alert-indicator {
+
+            background:
+                var(--orange);
+        }
+
+
+        /* =========================================
+           ALERT HEADER
+        ========================================= */
+
+        .alert-header {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                9px;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .batch-code {
+
+            font-size:
+                15px;
+
+            font-weight:
+                800;
+        }
+
+
+        .product-name {
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+        }
+
+
+        .severity {
+
+            display:
+                inline-flex;
+
+            padding:
+                5px 10px;
+
+            border-radius:
+                999px;
+
+            font-size:
+                10px;
+
+            font-weight:
+                750;
+        }
+
+
+        .severity.warning {
+
+            background:
+                var(--orange-soft);
+
+            color:
+                #b54708;
+        }
+
+
+        .severity.critical {
+
+            background:
+                var(--red-soft);
+
+            color:
+                #b42318;
+        }
+
+
+        /* =========================================
+           MESSAGE
+        ========================================= */
+
+        .alert-message {
+
+            color:
+                #475467;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.55;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        /* =========================================
+           DETAILS
+        ========================================= */
+
+        .alert-details {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                20px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                11px;
+        }
+
+
+        .alert-details strong {
+
+            color:
+                #344054;
+        }
+
+
+        /* =========================================
+           RECOMMENDATION
+        ========================================= */
+
+        .recommendation {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8fafc,
+                    #f3f6fa
+                );
+
+            border:
+                1px solid #eef0f4;
+
+            border-radius:
+                10px;
+
+            padding:
+                13px;
+
+            margin-top:
+                13px;
+
+            color:
+                #475467;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.5;
+        }
+
+
+        .recommendation strong {
+
+            color:
+                #344054;
+        }
+
+
+        /* =========================================
+           ACTIONS
+        ========================================= */
+
+        .alert-actions {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                8px;
+
+            min-width:
+                145px;
+        }
+
+
+        .view-button {
+
+            display:
+                block;
+
+            text-align:
+                center;
+
+            padding:
+                9px 14px;
+
+            border:
+                1px solid #d0d5dd;
+
+            border-radius:
+                9px;
+
+            color:
+                #344054;
+
+            background:
+                white;
+
+            text-decoration:
+                none;
+
+            font-size:
+                11px;
+
+            font-weight:
+                650;
+
+            transition:
+                background 0.2s ease;
+        }
+
+
+        .view-button:hover {
+
+            background:
+                #f8fafc;
+        }
+
+
+        .resolve-button {
+
+            padding:
+                10px 14px;
+
+            border:
+                none;
+
+            border-radius:
+                9px;
+
+            background:
+                #172033;
+
+            color:
+                white;
+
+            font-size:
+                11px;
+
+            font-weight:
+                650;
+
+            cursor:
+                pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .resolve-button:hover {
+
+            background:
+                #0b1526;
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================================
+           REVIEW STATUS
+        ========================================= */
+
+        .review-row {
+
+            margin-top:
+                11px;
+        }
+
+
+        .review-status {
+
+            display:
+                inline-flex;
+
+            padding:
+                5px 10px;
+
+            border-radius:
+                999px;
+
+            font-size:
+                10px;
+
+            font-weight:
+                750;
+
+            background:
+                #f2f4f7;
+
+            color:
+                #475467;
+        }
+
+
+        .review-status.escalated {
+
+            background:
+                var(--red-soft);
+
+            color:
+                #b42318;
+        }
+
+
+        .review-status.reviewed {
+
+            background:
+                var(--green-soft);
+
+            color:
+                #027a48;
+        }
+
+
+        .reviewed-info {
+
+            margin-left:
+                8px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                11px;
+        }
+
+
+        /* =========================================
+           REVIEW PANEL
+        ========================================= */
+
+        .review-panel {
+
+            display:
+                none;
+
+            margin-top:
+                13px;
+
+            padding:
+                15px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                11px;
+
+            background:
+                #f8fafc;
+        }
+
+
+        .review-panel.open {
+
+            display:
+                block;
+        }
+
+
+        .review-label {
+
+            display:
+                block;
+
+            color:
+                #344054;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                7px;
+        }
+
+
+        .review-comment {
+
+            width:
+                100%;
+
+            min-height:
+                75px;
+
+            resize:
+                vertical;
+
+            border:
+                1px solid #d0d5dd;
+
+            border-radius:
+                8px;
+
+            padding:
+                10px;
+
+            font-family:
+                inherit;
+
+            font-size:
+                12px;
+
+            outline:
+                none;
+        }
+
+
+        .review-comment:focus {
+
+            border-color:
+                var(--blue);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(47,111,237,0.08);
+        }
+
+
+        .decision-buttons {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                8px;
+
+            margin-top:
+                10px;
+        }
+
+
+        .decision-button {
+
+            padding:
+                9px 13px;
+
+            border-radius:
+                8px;
+
+            font-size:
+                11px;
+
+            font-weight:
+                650;
+
+            cursor:
+                pointer;
+
+            background:
+                white;
+
+            transition:
+                background 0.2s ease;
+        }
+
+
+        .decision-button.accept {
+
+            border:
+                1px solid #12b76a;
+
+            color:
+                #027a48;
+        }
+
+
+        .decision-button.reject {
+
+            border:
+                1px solid #f04438;
+
+            color:
+                #b42318;
+        }
+
+
+        .decision-button.escalate {
+
+            border:
+                1px solid #f79009;
+
+            color:
+                #b54708;
+        }
+
+
+        .decision-button:hover {
+
+            background:
+                #f2f4f7;
+        }
+
+
+        .decision-button:disabled {
+
+            opacity:
+                0.6;
+
+            cursor:
+                not-allowed;
+        }
+
+
+        /* =========================================
+           EMPTY
+        ========================================= */
+
+        .empty-state {
+
+            text-align:
+                center;
+
+            padding:
+                70px 20px;
+
+            color:
+                var(--muted);
+        }
+
+
+        .empty-icon {
+
+            width:
+                62px;
+
+            height:
+                62px;
+
+            margin:
+                0 auto 16px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green);
+
+            font-size:
+                26px;
+
+            font-weight:
+                800;
+        }
+
+
+        .empty-title {
+
+            color:
+                #344054;
+
+            font-size:
+                17px;
+
+            font-weight:
+                750;
+
+            margin-bottom:
+                7px;
+        }
+
+
+        /* =========================================
+           ERROR
+        ========================================= */
+
+        .error-state {
+
+            display:
+                none;
+
+            padding:
+                16px;
+
+            margin-bottom:
+                16px;
+
+            border-radius:
+                10px;
+
+            background:
+                var(--red-soft);
+
+            border:
+                1px solid #fecdca;
+
+            color:
+                #b42318;
+
+            font-size:
+                12px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 950px) {
+
+            .summary-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .alert-card {
+
+                grid-template-columns:
+                    7px 1fr;
+            }
+
+
+            .alert-actions {
+
+                grid-column:
+                    2;
+
+                flex-direction:
+                    row;
+
+                min-width:
+                    0;
+            }
+
+
+            .view-button {
+
+                flex:
+                    1;
+            }
+
+
+            .resolve-button {
+
+                flex:
+                    1;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                width:
+                    70px;
+
+                padding:
+                    22px 9px;
+            }
+
+
+            .logo,
+            .tagline,
+            .nav-text {
+
+                display:
+                    none;
+            }
+
+
+            .nav-item {
+
+                justify-content:
+                    center;
+
+                padding:
+                    13px 8px;
+            }
+
+
+            .main {
+
+                margin-left:
+                    70px;
+
+                width:
+                    calc(100% - 70px);
+
+                padding:
+                    20px 14px 35px;
+            }
+
+
+            .topbar {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    flex-start;
+
+                gap:
+                    15px;
+            }
+
+
+            .panel {
+
+                padding:
+                    18px;
+            }
+
+
+            .alert-card {
+
+                padding:
+                    15px;
+            }
+
+
+            .alert-actions {
+
+                flex-direction:
+                    column;
+            }
+
+
+            .decision-buttons {
+
+                flex-direction:
+                    column;
+            }
+
+
+            .decision-button {
+
+                width:
+                    100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="logo">
+            FreshGuard
+        </div>
+
+
+        <div class="tagline">
+            Intelligent shelf-life monitoring
+        </div>
+
+
+        <a
+            href="/"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            <span class="nav-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a
+            href="/batches"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ▣
+            </span>
+
+            <span class="nav-text">
+                Batches
+            </span>
+
+        </a>
+
+
+        <a
+            href="/monitoring"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ◉
+            </span>
+
+            <span class="nav-text">
+                Monitoring
+            </span>
+
+        </a>
+
+
+        <a
+            href="/analytics"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ◌
+            </span>
+
+            <span class="nav-text">
+                Analytics
+            </span>
+
+        </a>
+
+
+        <a
+            href="/alerts"
+            class="nav-item active"
+        >
+
+            <span class="nav-icon">
+                !
+            </span>
+
+            <span class="nav-text">
+                Alerts
+            </span>
+
+        </a>
+
+
+        <a
+            href="/settings"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ⚙
+            </span>
+
+            <span class="nav-text">
+                Settings
+            </span>
+
+        </a>
+
+
+    </aside>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================= -->
+
+    <main class="main">
+
+
+        <div class="topbar">
+
+
+            <div>
+
+                <div class="page-title">
+                    Alerts
+                </div>
+
+
+                <div class="page-subtitle">
+                    Real-time risk notifications requiring human attention
+                </div>
+
+            </div>
+
+
+            <div class="live-indicator">
+
+                <span class="live-dot"></span>
+
+                Live Monitoring
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================================
+             SUMMARY
+        ========================================= -->
+
+        <div class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Total Active Alerts
+                </div>
+
+
+                <div
+                    id="totalAlerts"
+                    class="summary-value summary-total"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Critical Alerts
+                </div>
+
+
+                <div
+                    id="criticalAlerts"
+                    class="summary-value summary-critical"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Warning Alerts
+                </div>
+
+
+                <div
+                    id="warningAlerts"
+                    class="summary-value summary-warning"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================================
+             ALERT PANEL
+        ========================================= -->
+
+        <section class="panel">
+
+
+            <div class="panel-header">
+
+
+                <div>
+
+                    <div class="panel-title">
+                        Active Alerts
+                    </div>
+
+
+                    <div class="panel-description">
+                        Review alerts and record human decisions
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="refreshText"
+                    class="refresh-text"
+                >
+                    Loading...
+                </div>
+
+
+            </div>
+
+
+
+            <div
+                id="errorState"
+                class="error-state"
+            >
+                Unable to load alerts.
+            </div>
+
+
+
+            <div
+                id="alertList"
+                class="alert-list"
+            ></div>
+
+
+
+            <div
+                id="emptyState"
+                class="empty-state"
+                style="display:none;"
+            >
+
+                <div class="empty-icon">
+                    ✓
+                </div>
+
+
+                <div class="empty-title">
+                    No Active Alerts
+                </div>
+
+
+                <div>
+                    All monitored batches are currently within acceptable conditions.
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+
+    let refreshTimer = null;
+
+
+
+    /* =========================================
+       LOAD ALERTS
+    ========================================= */
+
+    async function loadAlerts() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/alerts"
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load alerts."
+                );
+
+            }
+
+
+            const alerts =
+                await response.json();
+
+
+            renderAlerts(
+                alerts
+            );
+
+
+            document
+                .getElementById(
+                    "errorState"
+                )
+                .style.display =
+                    "none";
+
+
+            document
+                .getElementById(
+                    "refreshText"
+                )
+                .textContent =
+                    `Last updated ${new Date().toLocaleTimeString()}`;
+
+
+        } catch (error) {
+
+            console.error(
+                "Alert loading failed:",
+                error
+            );
+
+
+            document
+                .getElementById(
+                    "errorState"
+                )
+                .style.display =
+                    "block";
+
+
+            document
+                .getElementById(
+                    "refreshText"
+                )
+                .textContent =
+                    "Update failed.";
+
+        }
+
+    }
+
+
+
+    /* =========================================
+       RENDER ALERTS
+    ========================================= */
+
+    function renderAlerts(
+        alerts
+    ) {
+
+        const list =
+            document.getElementById(
+                "alertList"
+            );
+
+
+        const emptyState =
+            document.getElementById(
+                "emptyState"
+            );
+
+
+        list.innerHTML =
+            "";
+
+
+        /* =====================================
+           SUMMARY COUNTS
+        ===================================== */
+
+        const criticalCount =
+            alerts.filter(
+                alert =>
+                    alert.severity ===
+                    "Critical"
+            ).length;
+
+
+        const warningCount =
+            alerts.filter(
+                alert =>
+                    alert.severity ===
+                    "Warning"
+            ).length;
+
+
+        document
+            .getElementById(
+                "totalAlerts"
+            )
+            .textContent =
+                alerts.length;
+
+
+        document
+            .getElementById(
+                "criticalAlerts"
+            )
+            .textContent =
+                criticalCount;
+
+
+        document
+            .getElementById(
+                "warningAlerts"
+            )
+            .textContent =
+                warningCount;
+
+
+
+        /* =====================================
+           EMPTY STATE
+        ===================================== */
+
+        if (
+            alerts.length ===
+            0
+        ) {
+
+            emptyState.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        emptyState.style.display =
+            "none";
+
+
+
+        /* =====================================
+           SORT
+        ===================================== */
+
+        alerts.sort(
+            (a, b) => {
+
+                const priority = {
+
+                    "Critical":
+                        1,
+
+                    "Warning":
+                        2
+
+                };
+
+
+                return (
+                    priority[a.severity] -
+                    priority[b.severity]
+                );
+
+            }
+        );
+
+
+
+        /* =====================================
+           CREATE ALERT CARDS
+        ===================================== */
+
+        alerts.forEach(
+            alert => {
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    `alert-card ${String(
+                        alert.severity
+                    ).toLowerCase()}`;
+
+
+                const reviewStatus =
+                    alert.review_status ||
+                    "Pending";
+
+
+                const statusClass =
+                    reviewStatus ===
+                    "Escalated"
+                        ? "escalated"
+                        : reviewStatus ===
+                          "Reviewed"
+                            ? "reviewed"
+                            : "";
+
+
+                card.innerHTML = `
+
+                    <div class="alert-indicator"></div>
+
+
+                    <div>
+
+                        <div class="alert-header">
+
+                            <span class="batch-code">
+
+                                ${escapeHtml(
+                                    alert.batch_code
+                                )}
+
+                            </span>
+
+
+                            <span class="product-name">
+
+                                ${escapeHtml(
+                                    alert.product_name
+                                )}
+
+                            </span>
+
+
+                            <span
+                                class="severity ${String(
+                                    alert.severity
+                                ).toLowerCase()}"
+                            >
+
+                                ${escapeHtml(
+                                    alert.severity
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="alert-message">
+
+                            ${escapeHtml(
+                                alert.message
+                            )}
+
+                        </div>
+
+
+                        <div class="alert-details">
+
+                            <span>
+
+                                Remaining life:
+
+                                <strong>
+                                    ${escapeHtml(
+                                        alert.estimated_remaining_shelf_life
+                                    )}
+                                    days
+                                </strong>
+
+                            </span>
+
+
+                            <span>
+
+                                Stress score:
+
+                                <strong>
+                                    ${escapeHtml(
+                                        alert.environmental_stress_score
+                                    )}
+                                </strong>
+
+                            </span>
+
+
+                            <span>
+
+                                Created:
+
+                                <strong>
+                                    ${formatDate(
+                                        alert.created_at
+                                    )}
+                                </strong>
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="recommendation">
+
+                            <strong>
+                                Recommended action:
+                            </strong>
+
+                            ${escapeHtml(
+                                alert.recommendation
+                            )}
+
+                        </div>
+
+
+                        <div class="review-row">
+
+                            <span
+                                class="review-status ${statusClass}"
+                            >
+
+                                Review:
+                                ${escapeHtml(
+                                    reviewStatus
+                                )}
+
+                            </span>
+
+
+                            ${
+                                alert.human_decision
+                                    ? `
+                                        <span class="reviewed-info">
+
+                                            Decision:
+                                            <strong>
+                                                ${escapeHtml(
+                                                    alert.human_decision
+                                                )}
+                                            </strong>
+
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert-actions">
+
+
+                        <a
+                            href="/batches/${alert.batch_id}"
+                            class="view-button"
+                        >
+                            View Batch
+                        </a>
+
+
+                        <button
+                            type="button"
+                            class="resolve-button"
+                            onclick="toggleReview(${alert.id})"
+                        >
+                            Review Alert
+                        </button>
+
+
+                        <div
+                            id="review-${alert.id}"
+                            class="review-panel"
+                        >
+
+                            <label
+                                class="review-label"
+                                for="comment-${alert.id}"
+                            >
+                                Human Review Comment
+                            </label>
+
+
+                            <textarea
+                                id="comment-${alert.id}"
+                                class="review-comment"
+                                placeholder="Explain your decision (optional)..."
+                            ></textarea>
+
+
+                            <div class="decision-buttons">
+
+
+                                <button
+                                    type="button"
+                                    class="decision-button accept"
+                                    onclick="submitDecision(
+                                        ${alert.id},
+                                        'Accepted',
+                                        this
+                                    )"
+                                >
+                                    ✓ Accept
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="decision-button reject"
+                                    onclick="submitDecision(
+                                        ${alert.id},
+                                        'Rejected',
+                                        this
+                                    )"
+                                >
+                                    ✕ Reject
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="decision-button escalate"
+                                    onclick="submitDecision(
+                                        ${alert.id},
+                                        'Escalated',
+                                        this
+                                    )"
+                                >
+                                    ↑ Escalate
+                                </button>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                `;
+
+
+                list.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =========================================
+       TOGGLE HUMAN REVIEW
+    ========================================= */
+
+    function toggleReview(
+        alertId
+    ) {
+
+        const panel =
+            document.getElementById(
+                `review-${alertId}`
+            );
+
+
+        if (!panel) {
+
+            return;
+
+        }
+
+
+        panel.classList.toggle(
+            "open"
+        );
+
+    }
+
+
+
+    /* =========================================
+       SUBMIT HUMAN DECISION
+    ========================================= */
+
+    async function submitDecision(
+        alertId,
+        decision,
+        button
+    ) {
+
+        const commentElement =
+            document.getElementById(
+                `comment-${alertId}`
+            );
+
+
+        const comment =
+            commentElement
+                ? commentElement.value.trim()
+                : "";
+
+
+        const confirmed =
+            confirm(
+                `Record this alert as ${decision}?`
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        const buttons =
+            document.querySelectorAll(
+                `#review-${alertId} .decision-button`
+            );
+
+
+        buttons.forEach(
+            item => {
+
+                item.disabled =
+                    true;
+
+            }
+        );
+
+
+        button.textContent =
+            "Saving...";
+
+
+        try {
+
+
+            const response =
+                await fetch(
+                    `/api/alerts/${alertId}/decision`,
+                    {
+
+                        method:
+                            "PUT",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                decision:
+                                    decision,
+
+                                comment:
+                                    comment ||
+                                    null
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "Failed to record human decision."
+                );
+
+            }
+
+
+            await loadAlerts();
+
+
+        } catch (error) {
+
+            console.error(
+                "Human decision failed:",
+                error
+            );
+
+
+            alert(
+                error.message
+            );
+
+
+            buttons.forEach(
+                item => {
+
+                    item.disabled =
+                        false;
+
+                }
+            );
+
+
+            button.textContent =
+                decision ===
+                "Accepted"
+
+                    ? "✓ Accept"
+
+                    : decision ===
+                      "Rejected"
+
+                        ? "✕ Reject"
+
+                        : "↑ Escalate";
+
+        }
+
+    }
+
+
+
+    /* =========================================
+       FORMAT DATE
+    ========================================= */
+
+    function formatDate(
+        value
+    ) {
+
+        if (!value) {
+
+            return "--";
+
+        }
+
+
+        const date =
+            new Date(
+                value
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "--";
+
+        }
+
+
+        return date.toLocaleString(
+            "en-IN",
+            {
+
+                day:
+                    "2-digit",
+
+                month:
+                    "short",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit"
+
+            }
+        );
+
+    }
+
+
+
+    /* =========================================
+       ESCAPE HTML
+    ========================================= */
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value ?? ""
+        )
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+    }
+
+
+
+    /* =========================================
+       INITIAL LOAD
+    ========================================= */
+
+    loadAlerts();
+
+
+    /* =========================================
+       AUTO REFRESH
+    ========================================= */
+
+    refreshTimer =
+        setInterval(
+            loadAlerts,
+            10000
+        );
+
+
+</script>
+
+
+</body>
+
+</html>

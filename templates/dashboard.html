@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FreshGuard | Command Center</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f4f7fb;
+            --surface: #ffffff;
+            --surface-soft: #f8fafc;
+            --border: #e6eaf0;
+
+            --text: #172033;
+            --muted: #667085;
+            --muted-light: #98a2b3;
+
+            --sidebar: #0d1728;
+            --sidebar-hover: #17243a;
+
+            --blue: #2f6fed;
+            --blue-soft: #eef4ff;
+
+            --green: #12b76a;
+            --green-soft: #ecfdf3;
+
+            --orange: #f79009;
+            --orange-soft: #fffaeb;
+
+            --red: #f04438;
+            --red-soft: #fef3f2;
+
+            --shadow:
+                0 8px 28px rgba(16, 24, 40, 0.06);
+
+            --shadow-hover:
+                0 14px 36px rgba(16, 24, 40, 0.10);
+        }
+
+
+        body {
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 90% 0%,
+                    rgba(47, 111, 237, 0.08),
+                    transparent 28%
+                ),
+                var(--bg);
+
+            color: var(--text);
+        }
+
+
+        /* =========================================
+           APPLICATION
+        ========================================= */
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+
+        .sidebar {
+            width: 250px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #0b1526 0%,
+                    #101c30 100%
+                );
+
+            color: white;
+
+            padding: 28px 16px;
+
+            position: fixed;
+
+            top: 0;
+            bottom: 0;
+            left: 0;
+
+            z-index: 20;
+
+            box-shadow:
+                10px 0 35px rgba(10, 20, 40, 0.08);
+        }
+
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+
+            padding: 0 14px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .tagline {
+            font-size: 11px;
+
+            color: #94a3b8;
+
+            padding: 0 14px;
+
+            margin-bottom: 34px;
+
+            letter-spacing: 0.15px;
+        }
+
+
+        .nav-item {
+            display: flex;
+
+            align-items: center;
+
+            padding: 12px 14px;
+
+            margin-bottom: 6px;
+
+            border-radius: 10px;
+
+            color: #b9c4d4;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+
+            border: 1px solid transparent;
+
+            cursor: pointer;
+        }
+
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.055);
+
+            color: white;
+
+            transform: translateX(2px);
+        }
+
+
+        .nav-item.active {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(47, 111, 237, 0.23),
+                    rgba(47, 111, 237, 0.07)
+                );
+
+            border-color:
+                rgba(96, 146, 255, 0.15);
+
+            color: white;
+
+            box-shadow:
+                inset 3px 0 0 var(--blue);
+        }
+
+
+        .nav-icon {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 28px;
+
+            font-size: 16px;
+
+            opacity: 0.95;
+        }
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .main {
+            margin-left: 250px;
+
+            width: calc(100% - 250px);
+
+            padding: 30px 38px 45px;
+        }
+
+
+        /* =========================================
+           TOP BAR
+        ========================================= */
+
+        .topbar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 28px;
+        }
+
+
+        .page-title {
+            font-size: 30px;
+
+            line-height: 1.15;
+
+            font-weight: 800;
+
+            letter-spacing: -0.8px;
+        }
+
+
+        .page-subtitle {
+            margin-top: 7px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+
+        .live-status {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            background:
+                rgba(255, 255, 255, 0.95);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 999px;
+
+            padding: 9px 15px;
+
+            font-size: 12px;
+
+            color: #344054;
+
+            box-shadow:
+                0 5px 18px rgba(16, 24, 40, 0.04);
+        }
+
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+
+            background: var(--green);
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 4px rgba(18, 183, 106, 0.12);
+
+            animation: pulse 2s infinite;
+        }
+
+
+        @keyframes pulse {
+
+            0% {
+                box-shadow:
+                    0 0 0 0 rgba(18, 183, 106, 0.35);
+            }
+
+            70% {
+                box-shadow:
+                    0 0 0 6px rgba(18, 183, 106, 0);
+            }
+
+            100% {
+                box-shadow:
+                    0 0 0 0 rgba(18, 183, 106, 0);
+            }
+        }
+
+
+        /* =========================================
+           ERROR
+        ========================================= */
+
+        .dashboard-error {
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 14px 16px;
+
+            border-radius: 12px;
+
+            background: var(--red-soft);
+
+            color: #b42318;
+
+            border: 1px solid #fecdca;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           STATISTICS
+        ========================================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+
+            gap: 16px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .stat-card {
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            box-shadow: var(--shadow);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .stat-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 78px;
+            height: 78px;
+
+            right: -25px;
+            top: -25px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(47, 111, 237, 0.055);
+        }
+
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow: var(--shadow-hover);
+        }
+
+
+        .stat-label {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            font-weight: 650;
+
+            margin-bottom: 11px;
+        }
+
+
+        .stat-value {
+            font-size: 30px;
+
+            line-height: 1;
+
+            font-weight: 800;
+
+            letter-spacing: -0.8px;
+        }
+
+
+        .stat-change {
+            margin-top: 10px;
+
+            font-size: 11px;
+
+            color: var(--green);
+
+            font-weight: 550;
+        }
+
+
+        .stat-change.warning {
+            color: var(--orange);
+        }
+
+
+        /* =========================================
+           CONTENT GRID
+        ========================================= */
+
+        .content-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 2fr)
+                minmax(300px, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .panel,
+        .table-panel {
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 22px;
+
+            box-shadow: var(--shadow);
+        }
+
+
+        .panel-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+
+        .panel-title {
+            font-size: 15px;
+
+            font-weight: 750;
+
+            letter-spacing: -0.1px;
+        }
+
+
+        .panel-description {
+            margin-top: 4px;
+
+            font-size: 11px;
+
+            color: var(--muted-light);
+        }
+
+
+        .panel-link {
+            color: #475467;
+
+            font-size: 12px;
+
+            text-decoration: none;
+
+            font-weight: 650;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .panel-link:hover {
+            color: var(--blue);
+        }
+
+
+        /* =========================================
+           SHELF LIFE CHART
+        ========================================= */
+
+        .chart {
+            height: 230px;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            gap: 14px;
+
+            padding:
+                12px 5px 0;
+
+            border-bottom:
+                1px solid var(--border);
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(47, 111, 237, 0.025),
+                    transparent 60%
+                );
+
+            border-radius:
+                10px 10px 0 0;
+        }
+
+
+        .bar-group {
+            flex: 1;
+
+            height: 100%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: flex-end;
+
+            align-items: center;
+        }
+
+
+        .bar {
+            width: 58%;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #5b8def,
+                    #344054
+                );
+
+            border-radius:
+                7px 7px 0 0;
+
+            min-height: 20px;
+
+            transition:
+                height 0.3s ease,
+                opacity 0.2s ease;
+        }
+
+
+        .bar:hover {
+            opacity: 0.78;
+        }
+
+
+        .bar-label {
+            margin-top: 9px;
+
+            font-size: 10px;
+
+            color: var(--muted-light);
+
+            font-weight: 650;
+        }
+
+
+        /* =========================================
+           RISK OVERVIEW
+        ========================================= */
+
+        .risk-item {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 13px 0;
+
+            border-bottom:
+                1px solid #f2f4f7;
+        }
+
+
+        .risk-item:last-child {
+            border-bottom: none;
+        }
+
+
+        .risk-name {
+            font-size: 13px;
+
+            font-weight: 650;
+        }
+
+
+        .risk-meta {
+            color: var(--muted-light);
+
+            font-size: 11px;
+
+            margin-top: 4px;
+        }
+
+
+        .badge {
+            padding:
+                5px 9px;
+
+            border-radius:
+                999px;
+
+            font-size: 10px;
+
+            font-weight: 750;
+
+            letter-spacing: 0.15px;
+
+            white-space: nowrap;
+        }
+
+
+        .healthy {
+            background: var(--green-soft);
+
+            color: #027a48;
+        }
+
+
+        .warning {
+            background: var(--orange-soft);
+
+            color: #b54708;
+        }
+
+
+        .critical {
+            background: var(--red-soft);
+
+            color: #b42318;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .table-panel {
+            margin-bottom: 22px;
+        }
+
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+
+        th {
+            text-align: left;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            font-weight: 750;
+
+            letter-spacing: 0.5px;
+
+            padding:
+                12px 10px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        td {
+            padding:
+                14px 10px;
+
+            border-bottom:
+                1px solid #f2f4f7;
+
+            font-size: 12px;
+        }
+
+
+        tbody tr {
+            transition:
+                background 0.15s ease;
+        }
+
+
+        tbody tr:hover {
+            background:
+                var(--surface-soft);
+        }
+
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        .product {
+            font-weight: 700;
+        }
+
+
+        .muted {
+            color: var(--muted);
+        }
+
+
+        /* =========================================
+           ALERTS
+        ========================================= */
+
+        .dashboard-alert {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 18px;
+
+            padding: 15px 0;
+
+            border-bottom:
+                1px solid #f2f4f7;
+        }
+
+
+        .dashboard-alert:last-child {
+            border-bottom: none;
+        }
+
+
+        .dashboard-alert-main {
+            min-width: 0;
+        }
+
+
+        .dashboard-alert-title {
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .dashboard-alert-meta {
+            color: var(--muted-light);
+
+            font-size: 11px;
+
+            margin-top: 5px;
+        }
+
+
+        .dashboard-alert-message {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-top: 5px;
+        }
+
+
+        .alert-link {
+            color: #344054;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 650;
+
+            white-space: nowrap;
+        }
+
+
+        .alert-link:hover {
+            color: var(--blue);
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1250px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 1000px) {
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main {
+                padding:
+                    25px 24px 40px;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                width: 70px;
+
+                padding:
+                    22px 9px;
+            }
+
+
+            .logo,
+            .tagline,
+            .nav-text {
+                display: none;
+            }
+
+
+            .nav-item {
+                justify-content: center;
+
+                padding:
+                    13px 8px;
+            }
+
+
+            .main {
+                margin-left: 70px;
+
+                width:
+                    calc(100% - 70px);
+
+                padding:
+                    20px 14px 35px;
+            }
+
+
+            .topbar {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+
+            .table-panel {
+                overflow-x: auto;
+            }
+
+
+            table {
+                min-width: 720px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            FreshGuard
+        </div>
+
+        <div class="tagline">
+            Intelligent shelf-life monitoring
+        </div>
+
+
+        <a
+            href="/"
+            class="nav-item active"
+        >
+            <span class="nav-icon">⌂</span>
+
+            <span class="nav-text">
+                Dashboard
+            </span>
+        </a>
+
+
+        <a
+            href="/batches"
+            class="nav-item"
+        >
+            <span class="nav-icon">▣</span>
+
+            <span class="nav-text">
+                Batches
+            </span>
+        </a>
+
+
+        <a
+            href="/monitoring"
+            class="nav-item"
+        >
+            <span class="nav-icon">◉</span>
+
+            <span class="nav-text">
+                Monitoring
+            </span>
+        </a>
+
+
+        <a
+            href="/analytics"
+            class="nav-item"
+        >
+            <span class="nav-icon">◌</span>
+
+            <span class="nav-text">
+                Analytics
+            </span>
+        </a>
+
+
+        <a
+            href="/alerts"
+            class="nav-item"
+        >
+            <span class="nav-icon">!</span>
+
+            <span class="nav-text">
+                Alerts
+            </span>
+        </a>
+
+
+        <a
+            href="/settings"
+            class="nav-item"
+        >
+            <span class="nav-icon">⚙</span>
+
+            <span class="nav-text">
+                Settings
+            </span>
+        </a>
+
+    </aside>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <div class="page-title">
+                    Dashboard
+                </div>
+
+                <div class="page-subtitle">
+                    Real-time overview of food quality and shelf-life
+                </div>
+
+            </div>
+
+
+            <div class="live-status">
+
+                <span class="live-dot"></span>
+
+                System Operational
+
+            </div>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div
+            id="dashboardError"
+            class="dashboard-error"
+        ></div>
+
+
+        <!-- =====================================
+             STATISTICS
+        ====================================== -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Active Batches
+                </div>
+
+                <div
+                    id="activeBatches"
+                    class="stat-value"
+                >
+                    0
+                </div>
+
+                <div class="stat-change">
+                    Currently monitored
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Healthy Batches
+                </div>
+
+                <div
+                    id="healthyBatches"
+                    class="stat-value"
+                >
+                    0
+                </div>
+
+                <div class="stat-change">
+                    Within safe range
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    At Risk
+                </div>
+
+                <div
+                    id="riskBatches"
+                    class="stat-value"
+                >
+                    0
+                </div>
+
+                <div class="stat-change warning">
+                    Requires attention
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Avg. Remaining Life
+                </div>
+
+                <div
+                    id="avgShelfLife"
+                    class="stat-value"
+                >
+                    0d
+                </div>
+
+                <div class="stat-change">
+                    Across active batches
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Active Alerts
+                </div>
+
+                <div
+                    id="activeAlerts"
+                    class="stat-value"
+                >
+                    0
+                </div>
+
+                <div
+                    id="alertSummary"
+                    class="stat-change warning"
+                >
+                    No active alerts
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =====================================
+             OVERVIEW
+        ====================================== -->
+
+        <section class="content-grid">
+
+
+            <!-- SHELF LIFE -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="panel-title">
+                            Shelf-Life Overview
+                        </div>
+
+                        <div class="panel-description">
+                            Recent monitoring activity
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="/analytics"
+                        class="panel-link"
+                    >
+                        Analytics →
+                    </a>
+
+                </div>
+
+
+                <div class="chart">
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar"
+                            style="height: 62%;"
+                        ></div>
+
+                        <div class="bar-label">
+                            Mon
+                        </div>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar"
+                            style="height: 72%;"
+                        ></div>
+
+                        <div class="bar-label">
+                            Tue
+                        </div>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar"
+                            style="height: 55%;"
+                        ></div>
+
+                        <div class="bar-label">
+                            Wed
+                        </div>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar"
+                            style="height: 80%;"
+                        ></div>
+
+                        <div class="bar-label">
+                            Thu
+                        </div>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar"
+                            style="height: 68%;"
+                        ></div>
+
+                        <div class="bar-label">
+                            Fri
+                        </div>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar"
+                            style="height: 87%;"
+                        ></div>
+
+                        <div class="bar-label">
+                            Sat
+                        </div>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar"
+                            style="height: 74%;"
+                        ></div>
+
+                        <div class="bar-label">
+                            Sun
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- RISK -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="panel-title">
+                            Risk Overview
+                        </div>
+
+                        <div class="panel-description">
+                            Batches requiring attention
+                        </div>
+
+                    </div>
+
+
+                    <a
+                        href="/alerts"
+                        class="panel-link"
+                    >
+                        View alerts →
+                    </a>
+
+                </div>
+
+
+                <div id="riskOverview">
+
+                    <div
+                        class="muted"
+                        style="padding: 20px 0;"
+                    >
+                        Loading risk data...
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =====================================
+             RECENT BATCHES
+        ====================================== -->
+
+        <section class="table-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Recent Batches
+                    </div>
+
+                    <div class="panel-description">
+                        Latest monitored production batches
+                    </div>
+
+                </div>
+
+
+                <a
+                    href="/batches"
+                    class="panel-link"
+                >
+                    View all batches →
+                </a>
+
+            </div>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            BATCH
+                        </th>
+
+                        <th>
+                            PRODUCT
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            REMAINING LIFE
+                        </th>
+
+                        <th>
+                            TEMPERATURE
+                        </th>
+
+                        <th>
+                            UPDATED
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="recentBatchesBody">
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="muted"
+                        >
+                            Loading batches...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =====================================
+             ACTIVE ALERTS
+        ====================================== -->
+
+        <section class="table-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Active Alerts
+                    </div>
+
+                    <div class="panel-description">
+                        Human attention may be required
+                    </div>
+
+                </div>
+
+
+                <a
+                    href="/alerts"
+                    class="panel-link"
+                >
+                    View all alerts →
+                </a>
+
+            </div>
+
+
+            <div id="dashboardAlerts">
+
+                <div class="muted">
+                    Loading alerts...
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =========================================
+       DASHBOARD STATE
+    ========================================= */
+
+    let dashboardRefreshTimer = null;
+
+
+    /* =========================================
+       SECURITY
+    ========================================= */
+
+    function escapeHtml(value) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            value ?? "";
+
+        return div.innerHTML;
+    }
+
+
+    /* =========================================
+       TIME FORMAT
+    ========================================= */
+
+    function formatUpdated(dateString) {
+
+        if (!dateString) {
+            return "-";
+        }
+
+
+        const date =
+            new Date(dateString);
+
+
+        if (Number.isNaN(date.getTime())) {
+            return "-";
+        }
+
+
+        const seconds =
+            Math.max(
+                0,
+                Math.floor(
+                    (Date.now() - date.getTime()) / 1000
+                )
+            );
+
+
+        if (seconds < 60) {
+
+            return `${seconds}s ago`;
+
+        }
+
+
+        const minutes =
+            Math.floor(seconds / 60);
+
+
+        if (minutes < 60) {
+
+            return `${minutes} min ago`;
+
+        }
+
+
+        const hours =
+            Math.floor(minutes / 60);
+
+
+        if (hours < 24) {
+
+            return `${hours} hr ago`;
+
+        }
+
+
+        return `${Math.floor(hours / 24)} days ago`;
+
+    }
+
+
+    /* =========================================
+       STATUS CLASS
+    ========================================= */
+
+    function statusClass(status) {
+
+        if (status === "Critical") {
+            return "critical";
+        }
+
+
+        if (status === "Warning") {
+            return "warning";
+        }
+
+
+        return "healthy";
+
+    }
+
+
+    /* =========================================
+       ERROR HANDLING
+    ========================================= */
+
+    function setError(message) {
+
+        const errorBox =
+            document.getElementById(
+                "dashboardError"
+            );
+
+
+        if (message) {
+
+            errorBox.textContent =
+                message;
+
+            errorBox.style.display =
+                "block";
+
+        } else {
+
+            errorBox.textContent =
+                "";
+
+            errorBox.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* =========================================
+       LOAD ALERTS
+    ========================================= */
+
+    async function loadAlerts() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/alerts"
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load alerts."
+                );
+
+            }
+
+
+            const alerts =
+                await response.json();
+
+
+            renderAlerts(alerts);
+
+        } catch (error) {
+
+            console.error(
+                "Alert loading failed:",
+                error
+            );
+
+
+            document.getElementById(
+                "dashboardAlerts"
+            ).innerHTML = `
+                <div class="muted">
+                    Unable to load active alerts.
+                </div>
+            `;
+
+
+            document.getElementById(
+                "activeAlerts"
+            ).textContent = "—";
+
+
+            document.getElementById(
+                "alertSummary"
+            ).textContent =
+                "Alert data unavailable";
+
+        }
+
+    }
+
+
+    /* =========================================
+       RENDER ALERTS
+    ========================================= */
+
+    function renderAlerts(alerts) {
+
+        const container =
+            document.getElementById(
+                "dashboardAlerts"
+            );
+
+
+        const critical =
+            alerts.filter(
+                alert =>
+                    alert.severity === "Critical"
+            ).length;
+
+
+        const warning =
+            alerts.filter(
+                alert =>
+                    alert.severity === "Warning"
+            ).length;
+
+
+        document.getElementById(
+            "activeAlerts"
+        ).textContent =
+            alerts.length;
+
+
+        if (alerts.length === 0) {
+
+            document.getElementById(
+                "alertSummary"
+            ).textContent =
+                "No active alerts";
+
+
+            container.innerHTML = `
+                <div class="muted">
+                    No active alerts. All monitored batches are currently within acceptable conditions.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "alertSummary"
+        ).textContent =
+            `${critical} Critical · ${warning} Warning`;
+
+
+        const visibleAlerts =
+            [...alerts]
+                .sort(
+                    (a, b) => {
+
+                        const severityRank = {
+                            "Critical": 0,
+                            "Warning": 1
+                        };
+
+
+                        return (
+                            (severityRank[a.severity] ?? 2) -
+                            (severityRank[b.severity] ?? 2)
+                        );
+
+                    }
+                )
+                .slice(0, 5);
+
+
+        container.innerHTML =
+            visibleAlerts.map(
+                alert => `
+
+                    <div class="dashboard-alert">
+
+                        <div class="dashboard-alert-main">
+
+                            <div class="dashboard-alert-title">
+
+                                ${escapeHtml(
+                                    alert.batch_code
+                                )}
+
+                                ·
+
+                                ${escapeHtml(
+                                    alert.product_name
+                                )}
+
+                                <span
+                                    class="badge ${statusClass(
+                                        alert.severity
+                                    )}"
+                                >
+                                    ${escapeHtml(
+                                        alert.severity
+                                    )}
+                                </span>
+
+                            </div>
+
+
+                            <div class="dashboard-alert-meta">
+
+                                Remaining life:
+                                ${Number(
+                                    alert.estimated_remaining_shelf_life ?? 0
+                                ).toFixed(1)}
+                                days
+
+                                ·
+
+                                Stress score:
+                                ${Number(
+                                    alert.environmental_stress_score ?? 0
+                                ).toFixed(3)}
+
+                            </div>
+
+
+                            <div class="dashboard-alert-message">
+
+                                ${escapeHtml(
+                                    alert.message
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="/batches/${alert.batch_id}"
+                            class="alert-link"
+                        >
+                            View batch →
+                        </a>
+
+                    </div>
+
+                `
+            )
+            .join("");
+
+    }
+
+
+    /* =========================================
+       LOAD DASHBOARD
+    ========================================= */
+
+    async function loadDashboard() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/batches"
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load batch data."
+                );
+
+            }
+
+
+            const batches =
+                await response.json();
+
+
+            renderDashboard(batches);
+
+
+            setError("");
+
+        } catch (error) {
+
+            console.error(
+                "Dashboard loading failed:",
+                error
+            );
+
+
+            setError(
+                "Unable to load live batch data. Please check the server."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       RENDER DASHBOARD
+    ========================================= */
+
+    function renderDashboard(batches) {
+
+        const activeBatches =
+            batches.length;
+
+
+        const healthyBatches =
+            batches.filter(
+                batch =>
+                    batch.status === "Healthy"
+            ).length;
+
+
+        const riskBatches =
+            batches.filter(
+                batch =>
+                    batch.status === "Warning" ||
+                    batch.status === "Critical"
+            ).length;
+
+
+        const averageShelfLife =
+            activeBatches > 0
+
+                ? batches.reduce(
+                    (sum, batch) =>
+                        sum +
+                        Number(
+                            batch.remaining_shelf_life || 0
+                        ),
+                    0
+                ) / activeBatches
+
+                : 0;
+
+
+        document.getElementById(
+            "activeBatches"
+        ).textContent =
+            activeBatches;
+
+
+        document.getElementById(
+            "healthyBatches"
+        ).textContent =
+            healthyBatches;
+
+
+        document.getElementById(
+            "riskBatches"
+        ).textContent =
+            riskBatches;
+
+
+        document.getElementById(
+            "avgShelfLife"
+        ).textContent =
+            `${averageShelfLife.toFixed(1)}d`;
+
+
+        renderRiskOverview(batches);
+
+        renderRecentBatches(batches);
+
+    }
+
+
+    /* =========================================
+       RISK OVERVIEW
+    ========================================= */
+
+    function renderRiskOverview(batches) {
+
+        const container =
+            document.getElementById(
+                "riskOverview"
+            );
+
+
+        const riskyBatches =
+            batches
+                .filter(
+                    batch =>
+                        batch.status === "Critical" ||
+                        batch.status === "Warning"
+                )
+                .sort(
+                    (a, b) =>
+                        Number(
+                            a.remaining_shelf_life
+                        ) -
+                        Number(
+                            b.remaining_shelf_life
+                        )
+                )
+                .slice(0, 4);
+
+
+        if (riskyBatches.length === 0) {
+
+            const healthiest =
+                [...batches]
+                    .sort(
+                        (a, b) =>
+                            Number(
+                                a.remaining_shelf_life
+                            ) -
+                            Number(
+                                b.remaining_shelf_life
+                            )
+                    )
+                    .slice(0, 4);
+
+
+            if (healthiest.length === 0) {
+
+                container.innerHTML = `
+                    <div
+                        class="muted"
+                        style="padding: 20px 0;"
+                    >
+                        No batches available.
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                healthiest.map(
+                    batch => `
+
+                        <div class="risk-item">
+
+                            <div>
+
+                                <div class="risk-name">
+
+                                    ${escapeHtml(
+                                        batch.batch_code
+                                    )}
+
+                                </div>
+
+
+                                <div class="risk-meta">
+
+                                    ${escapeHtml(
+                                        batch.product_name
+                                    )}
+
+                                    ·
+
+                                    ${Number(
+                                        batch.remaining_shelf_life
+                                    ).toFixed(1)}
+
+                                    days remaining
+
+                                </div>
+
+                            </div>
+
+
+                            <span
+                                class="badge ${statusClass(
+                                    batch.status
+                                )}"
+                            >
+                                ${escapeHtml(
+                                    batch.status
+                                )}
+                            </span>
+
+                        </div>
+
+                    `
+                )
+                .join("");
+
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            riskyBatches.map(
+                batch => `
+
+                    <div class="risk-item">
+
+                        <div>
+
+                            <div class="risk-name">
+
+                                ${escapeHtml(
+                                    batch.batch_code
+                                )}
+
+                            </div>
+
+
+                            <div class="risk-meta">
+
+                                ${escapeHtml(
+                                    batch.product_name
+                                )}
+
+                                ·
+
+                                ${Number(
+                                    batch.remaining_shelf_life
+                                ).toFixed(1)}
+
+                                days remaining
+
+                            </div>
+
+                        </div>
+
+
+                        <span
+                            class="badge ${statusClass(
+                                batch.status
+                            )}"
+                        >
+                            ${escapeHtml(
+                                batch.status
+                            )}
+                        </span>
+
+                    </div>
+
+                `
+            )
+            .join("");
+
+    }
+
+
+    /* =========================================
+       RECENT BATCHES
+    ========================================= */
+
+    function renderRecentBatches(batches) {
+
+        const tbody =
+            document.getElementById(
+                "recentBatchesBody"
+            );
+
+
+        const recentBatches =
+            [...batches]
+                .sort(
+                    (a, b) =>
+                        new Date(b.created_at) -
+                        new Date(a.created_at)
+                )
+                .slice(0, 6);
+
+
+        if (recentBatches.length === 0) {
+
+            tbody.innerHTML = `
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="muted"
+                    >
+                        No batches available.
+                    </td>
+
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        tbody.innerHTML =
+            recentBatches.map(
+                batch => `
+
+                    <tr>
+
+                        <td class="product">
+
+                            ${escapeHtml(
+                                batch.batch_code
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(
+                                batch.product_name
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="badge ${statusClass(
+                                    batch.status
+                                )}"
+                            >
+                                ${escapeHtml(
+                                    batch.status
+                                )}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${Number(
+                                batch.remaining_shelf_life
+                            ).toFixed(1)}
+
+                            days
+
+                        </td>
+
+
+                        <td>
+
+                            ${Number(
+                                batch.temperature
+                            ).toFixed(1)}°C
+
+                        </td>
+
+
+                        <td class="muted">
+
+                            ${formatUpdated(
+                                batch.created_at
+                            )}
+
+                        </td>
+
+                    </tr>
+
+                `
+            )
+            .join("");
+
+    }
+
+
+    /* =========================================
+       INITIAL LOAD
+    ========================================= */
+
+    loadDashboard();
+
+    loadAlerts();
+
+
+    /* =========================================
+       AUTO REFRESH
+    ========================================= */
+
+    dashboardRefreshTimer =
+        setInterval(
+            () => {
+
+                loadDashboard();
+
+                loadAlerts();
+
+            },
+            10000
+        );
+
+</script>
+
+
+</body>
+
+</html>

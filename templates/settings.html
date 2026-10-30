@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FreshGuard - Settings</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6fb;
+            color: #10213a;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            width: 290px;
+            min-height: 100vh;
+            flex-shrink: 0;
+            background: #0c182b;
+            color: white;
+            padding: 32px 18px;
+        }
+
+        .brand {
+            padding: 0 16px;
+            margin-bottom: 48px;
+        }
+
+        .brand-name {
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .brand-subtitle {
+            margin-top: 9px;
+            color: #91a0b8;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            color: #aeb9ca;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .nav-item:hover {
+            background: #16263e;
+            color: #ffffff;
+        }
+
+        .nav-item.active {
+            background: #182c4b;
+            color: #ffffff;
+            box-shadow: inset 3px 0 0 #3478ff;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 38px 42px 50px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -1.2px;
+            color: #10213a;
+        }
+
+        .header p {
+            margin: 7px 0 0;
+            color: #61718b;
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           SYSTEM STATUS
+        ===================================================== */
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 17px;
+            background: #ffffff;
+            border: 1px solid #e1e7ef;
+            border-radius: 24px;
+            color: #087f5b;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(20, 40, 70, 0.05);
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #15b879;
+            box-shadow: 0 0 0 4px rgba(21, 184, 121, 0.10);
+        }
+
+
+        /* =====================================================
+           SETTINGS SECTIONS
+        ===================================================== */
+
+        .settings-section {
+            background: #ffffff;
+            border: 1px solid #e1e7ef;
+            border-radius: 17px;
+            padding: 26px;
+            margin-bottom: 24px;
+            box-shadow: 0 7px 22px rgba(29, 53, 87, 0.045);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 13px;
+            background: #edf4ff;
+            color: #2d72ff;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .notification-icon {
+            background: #fff7e9;
+            color: #d97706;
+        }
+
+        .system-icon {
+            background: #eefbf7;
+            color: #079669;
+        }
+
+        .section-title {
+            color: #10213a;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .section-description {
+            margin-top: 5px;
+            color: #8492a8;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           SETTING ROW
+        ===================================================== */
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            padding: 18px 0;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .setting-row:first-child {
+            padding-top: 0;
+        }
+
+        .setting-row:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-name {
+            color: #172941;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .setting-help {
+            margin-top: 5px;
+            color: #7d8ba0;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           INPUTS
+        ===================================================== */
+
+        .input-control {
+            width: 180px;
+            padding: 11px 13px;
+            border: 1px solid #d6deea;
+            border-radius: 9px;
+            background: #fbfcfe;
+            color: #172941;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .input-control:focus {
+            border-color: #3478ff;
+            box-shadow: 0 0 0 3px rgba(52, 120, 255, 0.10);
+        }
+
+        .input-with-unit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .unit {
+            color: #7d8ba0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           TOGGLE
+        ===================================================== */
+
+        .toggle {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #cbd5e1;
+            border-radius: 30px;
+            transition: 0.25s;
+        }
+
+        .slider::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: 3px;
+            top: 3px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            transition: 0.25s;
+        }
+
+        .toggle input:checked + .slider {
+            background: #3478ff;
+        }
+
+        .toggle input:checked + .slider::before {
+            transform: translateX(22px);
+        }
+
+
+        /* =====================================================
+           INFORMATION CARDS
+        ===================================================== */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .info-card {
+            padding: 18px;
+            background: #fbfcfe;
+            border: 1px solid #e1e7ef;
+            border-radius: 13px;
+        }
+
+        .info-label {
+            color: #7b899e;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            margin-top: 8px;
+            color: #172941;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .info-value.green {
+            color: #079669;
+        }
+
+
+        /* =====================================================
+           ACTION BAR
+        ===================================================== */
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .button {
+            padding: 12px 20px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .button-secondary {
+            background: #ffffff;
+            border: 1px solid #dbe2ec;
+            color: #45566f;
+        }
+
+        .button-secondary:hover {
+            background: #f7f9fc;
+        }
+
+        .button-primary {
+            background: #3478ff;
+            border: 1px solid #3478ff;
+            color: #ffffff;
+            box-shadow: 0 5px 13px rgba(52, 120, 255, 0.20);
+        }
+
+        .button-primary:hover {
+            background: #2868e5;
+        }
+
+
+        /* =====================================================
+           SAVE MESSAGE
+        ===================================================== */
+
+        .save-message {
+            display: none;
+            margin-top: 16px;
+            padding: 12px 15px;
+            border-radius: 9px;
+            background: #eefbf7;
+            border: 1px solid #c8eee1;
+            color: #087f5b;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .save-message.show {
+            display: block;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1200px) {
+
+            .sidebar {
+                width: 260px;
+            }
+
+            .main {
+                padding: 32px;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+
+        @media (max-width: 850px) {
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                padding: 22px;
+            }
+
+            .brand {
+                margin-bottom: 22px;
+            }
+
+            .nav {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .nav-item {
+                justify-content: center;
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .nav-icon {
+                display: none;
+            }
+
+            .main {
+                padding: 25px 18px;
+            }
+
+            .setting-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .input-control {
+                width: 100%;
+            }
+
+            .toggle {
+                align-self: flex-start;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .header {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .status-badge {
+                align-self: flex-start;
+            }
+
+            .nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .settings-section {
+                padding: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="layout">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-name">
+                FreshGuard
+            </div>
+
+            <div class="brand-subtitle">
+                Intelligent shelf-life monitoring
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+
+            <a
+                href="/"
+                class="nav-item"
+                onclick="window.location.href='/'; return false;"
+            >
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="/batches"
+                class="nav-item"
+            >
+                <span class="nav-icon">▣</span>
+                <span>Batches</span>
+            </a>
+
+
+            <a
+                href="/monitoring"
+                class="nav-item"
+            >
+                <span class="nav-icon">◉</span>
+                <span>Monitoring</span>
+            </a>
+
+
+            <a
+                href="/analytics"
+                class="nav-item"
+            >
+                <span class="nav-icon">◌</span>
+                <span>Analytics</span>
+            </a>
+
+
+            <a
+                href="/alerts"
+                class="nav-item"
+            >
+                <span class="nav-icon">!</span>
+                <span>Alerts</span>
+            </a>
+
+
+            <a
+                href="/settings"
+                class="nav-item active"
+            >
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <div class="header">
+
+            <div>
+
+                <h1>
+                    Settings
+                </h1>
+
+                <p>
+                    Configure FreshGuard monitoring and alert behavior
+                </p>
+
+            </div>
+
+
+            <div class="status-badge">
+
+                <span class="status-dot"></span>
+
+                System Operational
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MONITORING CONFIGURATION
+        ================================================== -->
+
+        <section class="settings-section">
+
+
+            <div class="section-header">
+
+                <div class="section-icon">
+                    ⚙
+                </div>
+
+
+                <div>
+
+                    <div class="section-title">
+                        Monitoring Configuration
+                    </div>
+
+                    <div class="section-description">
+                        Configure environmental monitoring and risk assessment behavior
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-name">
+                        Temperature Warning Threshold
+                    </div>
+
+                    <div class="setting-help">
+                        Temperature above this level will contribute to elevated environmental risk.
+                    </div>
+
+                </div>
+
+
+                <div class="input-with-unit">
+
+                    <input
+                        id="temperature-threshold"
+                        class="input-control"
+                        type="number"
+                        value="8"
+                        step="0.1"
+                    >
+
+                    <span class="unit">
+                        °C
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-name">
+                        Humidity Warning Threshold
+                    </div>
+
+                    <div class="setting-help">
+                        Humidity above this level will contribute to environmental stress.
+                    </div>
+
+                </div>
+
+
+                <div class="input-with-unit">
+
+                    <input
+                        id="humidity-threshold"
+                        class="input-control"
+                        type="number"
+                        value="80"
+                        step="1"
+                    >
+
+                    <span class="unit">
+                        %
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-name">
+                        Sensor Refresh Interval
+                    </div>
+
+                    <div class="setting-help">
+                        Controls how frequently FreshGuard refreshes displayed monitoring information.
+                    </div>
+
+                </div>
+
+
+                <div class="input-with-unit">
+
+                    <input
+                        id="refresh-interval"
+                        class="input-control"
+                        type="number"
+                        value="10"
+                        min="5"
+                    >
+
+                    <span class="unit">
+                        sec
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-name">
+                        Automatic Risk Assessment
+                    </div>
+
+                    <div class="setting-help">
+                        Automatically evaluate environmental conditions and remaining shelf-life.
+                    </div>
+
+                </div>
+
+
+                <label class="toggle">
+
+                    <input
+                        id="risk-assessment"
+                        type="checkbox"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ALERT CONFIGURATION
+        ================================================== -->
+
+        <section class="settings-section">
+
+
+            <div class="section-header">
+
+                <div class="section-icon notification-icon">
+                    !
+                </div>
+
+
+                <div>
+
+                    <div class="section-title">
+                        Alert Configuration
+                    </div>
+
+                    <div class="section-description">
+                        Control how FreshGuard identifies and presents risk conditions
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-name">
+                        Critical Alerts
+                    </div>
+
+                    <div class="setting-help">
+                        Display immediate attention notifications when a batch reaches critical risk.
+                    </div>
+
+                </div>
+
+
+                <label class="toggle">
+
+                    <input
+                        id="critical-alerts"
+                        type="checkbox"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-name">
+                        Warning Alerts
+                    </div>
+
+                    <div class="setting-help">
+                        Display warnings when a batch approaches a critical condition.
+                    </div>
+
+                </div>
+
+
+                <label class="toggle">
+
+                    <input
+                        id="warning-alerts"
+                        type="checkbox"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-name">
+                        Automatic Alert Generation
+                    </div>
+
+                    <div class="setting-help">
+                        Allow FreshGuard to generate alerts based on the latest sensor assessment.
+                    </div>
+
+                </div>
+
+
+                <label class="toggle">
+
+                    <input
+                        id="automatic-alerts"
+                        type="checkbox"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SYSTEM INFORMATION
+        ================================================== -->
+
+        <section class="settings-section">
+
+
+            <div class="section-header">
+
+                <div class="section-icon system-icon">
+                    ✓
+                </div>
+
+
+                <div>
+
+                    <div class="section-title">
+                        System Information
+                    </div>
+
+                    <div class="section-description">
+                        Current FreshGuard application status
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="info-grid">
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Application
+                    </div>
+
+                    <div class="info-value">
+                        FreshGuard
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Version
+                    </div>
+
+                    <div class="info-value">
+                        1.0.0
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        System Status
+                    </div>
+
+                    <div class="info-value green">
+                        Operational
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Monitoring
+                    </div>
+
+                    <div class="info-value green">
+                        Active
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Risk Engine
+                    </div>
+
+                    <div class="info-value green">
+                        Enabled
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Alert Engine
+                    </div>
+
+                    <div class="info-value green">
+                        Enabled
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ACTIONS
+        ================================================== -->
+
+        <div class="actions">
+
+            <button
+                class="button button-secondary"
+                onclick="resetSettings()"
+            >
+                Reset
+            </button>
+
+
+            <button
+                class="button button-primary"
+                onclick="saveSettings()"
+            >
+                Save Settings
+            </button>
+
+        </div>
+
+
+        <div
+            id="save-message"
+            class="save-message"
+        >
+            Settings saved successfully.
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+
+    /* =====================================================
+       SAVE SETTINGS
+    ===================================================== */
+
+    function saveSettings() {
+
+        const message =
+            document.getElementById(
+                "save-message"
+            );
+
+
+        const settings = {
+
+            temperatureThreshold:
+                document.getElementById(
+                    "temperature-threshold"
+                ).value,
+
+            humidityThreshold:
+                document.getElementById(
+                    "humidity-threshold"
+                ).value,
+
+            refreshInterval:
+                document.getElementById(
+                    "refresh-interval"
+                ).value,
+
+            riskAssessment:
+                document.getElementById(
+                    "risk-assessment"
+                ).checked,
+
+            criticalAlerts:
+                document.getElementById(
+                    "critical-alerts"
+                ).checked,
+
+            warningAlerts:
+                document.getElementById(
+                    "warning-alerts"
+                ).checked,
+
+            automaticAlerts:
+                document.getElementById(
+                    "automatic-alerts"
+                ).checked
+
+        };
+
+
+        localStorage.setItem(
+            "freshguard_settings",
+            JSON.stringify(settings)
+        );
+
+
+        message.classList.add(
+            "show"
+        );
+
+
+        setTimeout(
+            () => {
+
+                message.classList.remove(
+                    "show"
+                );
+
+            },
+            3000
+        );
+
+    }
+
+
+
+    /* =====================================================
+       LOAD SETTINGS
+    ===================================================== */
+
+    function loadSettings() {
+
+        const saved =
+            localStorage.getItem(
+                "freshguard_settings"
+            );
+
+
+        if (!saved) {
+            return;
+        }
+
+
+        try {
+
+            const settings =
+                JSON.parse(saved);
+
+
+            if (
+                settings.temperatureThreshold !==
+                undefined
+            ) {
+
+                document.getElementById(
+                    "temperature-threshold"
+                ).value =
+                    settings.temperatureThreshold;
+
+            }
+
+
+            if (
+                settings.humidityThreshold !==
+                undefined
+            ) {
+
+                document.getElementById(
+                    "humidity-threshold"
+                ).value =
+                    settings.humidityThreshold;
+
+            }
+
+
+            if (
+                settings.refreshInterval !==
+                undefined
+            ) {
+
+                document.getElementById(
+                    "refresh-interval"
+                ).value =
+                    settings.refreshInterval;
+
+            }
+
+
+            if (
+                settings.riskAssessment !==
+                undefined
+            ) {
+
+                document.getElementById(
+                    "risk-assessment"
+                ).checked =
+                    settings.riskAssessment;
+
+            }
+
+
+            if (
+                settings.criticalAlerts !==
+                undefined
+            ) {
+
+                document.getElementById(
+                    "critical-alerts"
+                ).checked =
+                    settings.criticalAlerts;
+
+            }
+
+
+            if (
+                settings.warningAlerts !==
+                undefined
+            ) {
+
+                document.getElementById(
+                    "warning-alerts"
+                ).checked =
+                    settings.warningAlerts;
+
+            }
+
+
+            if (
+                settings.automaticAlerts !==
+                undefined
+            ) {
+
+                document.getElementById(
+                    "automatic-alerts"
+                ).checked =
+                    settings.automaticAlerts;
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(
+                "Unable to load saved settings:",
+                error
+            );
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       RESET SETTINGS
+    ===================================================== */
+
+    function resetSettings() {
+
+        document.getElementById(
+            "temperature-threshold"
+        ).value = 8;
+
+
+        document.getElementById(
+            "humidity-threshold"
+        ).value = 80;
+
+
+        document.getElementById(
+            "refresh-interval"
+        ).value = 10;
+
+
+        document.getElementById(
+            "risk-assessment"
+        ).checked = true;
+
+
+        document.getElementById(
+            "critical-alerts"
+        ).checked = true;
+
+
+        document.getElementById(
+            "warning-alerts"
+        ).checked = true;
+
+
+        document.getElementById(
+            "automatic-alerts"
+        ).checked = true;
+
+
+        localStorage.removeItem(
+            "freshguard_settings"
+        );
+
+    }
+
+
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    loadSettings();
+
+
+</script>
+
+
+</body>
+
+</html>
